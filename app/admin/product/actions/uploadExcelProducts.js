@@ -18,8 +18,6 @@ export const uploadExcelProducts = async (formData) => {
   const sheet = workbook.Sheets[sheetName];
   const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-  console.log(jsonData);
-
   await uploadProducts(jsonData);
   revalidatePath("/admin/product", "page");
 };
@@ -30,7 +28,8 @@ const uploadProducts = async (parsedData) => {
   const subCategory = await prisma.subCategory.findMany({});
 
   const sizes = await prisma.size.findMany({});
-
+  console.log("sizes");
+  console.log(sizes);
   parsedData.forEach((row) => {
     if (category) {
     }
@@ -44,7 +43,13 @@ const uploadProducts = async (parsedData) => {
         c.categoryId == filteredCategory.id
     );
 
-    const filteredSize = sizes.find((c) => c.name.toLowerCase() == row.size);
+    const filteredSize = sizes.find(
+      (c) =>
+        c.name.toLowerCase() ==
+        String(row.size).replace(/\s+/g, "").toLowerCase()
+    );
+    console.log("filteredSize");
+    console.log(filteredSize);
 
     const duplicateProduct = products.find(
       (p) => p.productDetails.name === row.product_name
@@ -72,13 +77,7 @@ const uploadProducts = async (parsedData) => {
           is_featured: row.featured,
           is_bestSeller: row.best_seller,
           is_newArrival: row.new_arrival,
-          images: [
-            row.product_image1,
-            row.product_image2,
-            row.product_image3,
-            row.product_image4,
-            row.product_image5,
-          ],
+          images: row.product_images.split(","),
         },
         variations: [
           {

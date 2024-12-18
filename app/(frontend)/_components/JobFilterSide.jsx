@@ -89,7 +89,7 @@ const JobFilterSide = ({ sizes, categoryId, productColors, subCategoryId }) => {
                       defaultValue={field.value}
                       className=""
                     >
-                      <div className="grid grid-cols-3 lg:grid-cols-5 size">
+                      <div className="grid grid-cols-3 lg:grid-cols-4 size">
                         {sizes.map((size) => (
                           <FormItem className={``} key={size.id}>
                             <FormControl>

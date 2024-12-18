@@ -10,6 +10,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -25,14 +32,17 @@ const VariationForm = ({ variation }) => {
     resolver: zodResolver(varitionsSchema),
     defaultValues: {
       name: "",
+      size_type: "",
     },
   });
+  const sizeType = ["clothing", "kids", "shoes"];
   const handleSubmit = (data) => {
     const formData = new FormData();
     formData.append("name", data.name);
+    formData.append("size_type", data.size_type);
 
     startTransition(async () => {
-      const response = await addSizeVariation(formData, variation);
+      const response = await addSizeVariation(formData);
       if (response?.error) {
         setErrors(response.error);
         toast.error(response.error);
@@ -50,13 +60,36 @@ const VariationForm = ({ variation }) => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{variation} name</FormLabel>
+              <FormLabel>Size name</FormLabel>
               <FormControl>
                 <Input placeholder={`add ${variation}s  name`} {...field} />
               </FormControl>
-              <FormDescription>
-                if you want to add more {variation}s
-              </FormDescription>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="size_type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>size type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select size type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {sizeType.map((type, i) => (
+                    <SelectItem value={type} key={i}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               <FormMessage />
             </FormItem>
           )}

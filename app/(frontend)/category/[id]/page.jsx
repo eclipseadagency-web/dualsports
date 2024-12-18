@@ -5,7 +5,12 @@ import PaginationComponent from "../../_components/PaginationComponent";
 import JobFilterSide from "../../_components/JobFilterSide";
 
 const SingleCategoryPage = async ({ params, searchParams }) => {
-  const sizes = await prisma.size.findMany({});
+  const category = await prisma.category.findUnique({
+    where: { id: params.id },
+  });
+
+  let sizeType = category.name.toLowerCase() == "kids" ? "kids" : "clothing";
+  const sizes = await prisma.size.findMany({ where: { size_type: sizeType } });
   const productColors = await prisma.product.findMany({
     select: { color: true, id: true },
     distinct: ["color"],

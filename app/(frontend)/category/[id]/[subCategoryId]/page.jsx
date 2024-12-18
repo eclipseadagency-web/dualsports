@@ -5,7 +5,28 @@ import prisma from "@/prismaClient";
 import React from "react";
 
 const SubCategoryPage = async ({ params, searchParams }) => {
-  const sizes = await prisma.size.findMany({});
+  const category = await prisma.category.findUnique({
+    where: { id: params.id },
+  });
+  const subCategory = await prisma.subCategory.findUnique({
+    where: { id: params.subCategoryId },
+  });
+
+  let sizeType = "clothing";
+
+  if (category.name.toLowerCase() == "kids") {
+    sizeType = "kids";
+  }
+  if (
+    category.name.toLowerCase() != "kids" &&
+    subCategory.name.toLowerCase() == "shoes"
+  ) {
+    sizeType = "shoes";
+  }
+
+  const sizes = await prisma.size.findMany({
+    where: { size_type: sizeType },
+  });
   const productColors = await prisma.product.findMany({
     select: { color: true, id: true },
     distinct: ["color"],

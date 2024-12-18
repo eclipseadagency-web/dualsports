@@ -15,13 +15,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-const DeleteVariation = ({ variationId, variation }) => {
+const DeleteVariation = ({ variationId }) => {
   const [isPending, startTransition] = useTransition();
 
   return (
     <>
       <AlertDialog>
-        <AlertDialogTrigger>
+        <AlertDialogTrigger asChild>
           <Button variant="outline" size="small" disabled={isPending}>
             <XIcon color="red" className="cursor-pointer" />
           </Button>
@@ -39,10 +39,7 @@ const DeleteVariation = ({ variationId, variation }) => {
             <AlertDialogAction
               onClick={() => {
                 startTransition(async () => {
-                  const response = await deleteVariationAction(
-                    variationId,
-                    variation
-                  );
+                  const response = await deleteVariationAction(variationId);
                   if (response?.error) {
                     toast.error(response?.error);
                   } else {

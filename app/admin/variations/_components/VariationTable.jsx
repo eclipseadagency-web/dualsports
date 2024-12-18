@@ -11,38 +11,28 @@ import {
 import prisma from "@/prismaClient";
 import DeleteVariation from "./DeleteVariation";
 
-const VariationTable = async ({ variation }) => {
-  let variations = [];
-  if (variation == "size") {
-    variations = await prisma.size.findMany({ orderBy: { createdAt: "desc" } });
-  } else {
-    variations = await prisma.color.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-  }
+const VariationTable = async () => {
+  const sizes = await prisma.size.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
     <div className="mt-10">
       <Table>
-        <TableCaption>A list of all {variation} variations.</TableCaption>
+        <TableCaption>A list of all size variations.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="capitalize">{variation + "_id"}</TableHead>
-            <TableHead className="capitalize">{variation}</TableHead>
+            <TableHead className="capitalize">Size</TableHead>
+            <TableHead className="capitalize">size type</TableHead>
             <TableHead className="capitalize">actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {variations.length > 0 ? (
-            variations.map((vari) => (
+          {sizes.length > 0 ? (
+            sizes.map((vari) => (
               <TableRow key={vari.id}>
-                <TableCell>{vari.id}</TableCell>
                 <TableCell>{vari.name}</TableCell>
+                <TableCell>{vari.size_type}</TableCell>
                 <TableCell>
-                  <DeleteVariation
-                    variationId={vari.id}
-                    variation={variation}
-                  />
+                  <DeleteVariation variationId={vari.id} />
                 </TableCell>
               </TableRow>
             ))
