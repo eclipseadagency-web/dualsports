@@ -78,7 +78,10 @@ const PickVariationForm = ({ product, sizes }) => {
                           size.id
                         );
                         return (
-                          <FormItem key={size.id}>
+                          <FormItem
+                            key={size.id}
+                            className={`${isDisabled ? "hidden" : "abled"}`}
+                          >
                             <FormControl>
                               <RadioGroupItem
                                 value={size.id}

@@ -106,9 +106,6 @@ const SubCategoryPage = async ({ params, searchParams }) => {
     (product) => product.variations.length > 0
   );
 
-  if (filteredProducts?.length < 1) {
-    return <p>there are no products....expand your filters</p>;
-  }
   return (
     <div className="container">
       <div className="flex gap-4 md:flex-row">
@@ -118,18 +115,22 @@ const SubCategoryPage = async ({ params, searchParams }) => {
           productColors={productColors}
           subCategoryId={params.subCategoryId}
         />
-        <div>
-          <div className="grid md:grid-cols-4 gap-4 grid-cols-2">
-            {filteredProducts?.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+        {filteredProducts?.length < 1 ? (
+          <p>there are no products....expand your filters</p>
+        ) : (
+          <div>
+            <div className="grid md:grid-cols-4 gap-4 grid-cols-2">
+              {filteredProducts?.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            <PaginationComponent
+              page={page}
+              pageSize={pageSize}
+              totalCount={totalCount}
+            />
           </div>
-          <PaginationComponent
-            page={page}
-            pageSize={pageSize}
-            totalCount={totalCount}
-          />
-        </div>
+        )}
       </div>
     </div>
   );
