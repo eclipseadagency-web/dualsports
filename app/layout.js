@@ -11,9 +11,9 @@ const fontSans = FontSans({
 });
 
 export const metadata = {
-  title: "Flowbite",
+  title: "Dualsport",
   description:
-    "Discover a wide range of products at Flowbite - from the latest fashion trends to top electronics. Shop now for exclusive deals, fast shipping, and quality customer service. Your one-stop online shopping destination.",
+    "Discover a wide range of products at Dualsport - from the latest fashion trends to top electronics. Shop now for exclusive deals, fast shipping, and quality customer service. Your one-stop online shopping destination.",
 };
 
 export default function RootLayout({ children }) {
